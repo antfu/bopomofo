@@ -13,7 +13,7 @@ class PinyinParsingError(Exception):
 to_pinyin = _pinyin.get_pinyin
 
 
-def to_bopomofo(chars, splitter=u'、', tone_marks=True):
+def to_bopomofo(chars, splitter=u'、', tones=True):
     '''Translate words to bopomofo'''
 
     return splitter.join(_bopomofo_list(chars, show_tone_marks))

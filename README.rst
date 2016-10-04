@@ -1,5 +1,20 @@
 Bopomofo
 ==========
+.. image:: https://img.shields.io/travis/antfu/bopomofo.svg?style=flat-square
+    :target: https://travis-ci.org/antfu/bopomofo
+
+.. image:: https://img.shields.io/codecov/c/github/antfu/bopomofo.svg?style=flat-square
+    :target: https://codecov.io/gh/antfu/bopomofo
+
+.. image:: https://img.shields.io/pypi/v/bopomofo.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/bopomofo
+
+.. image:: https://img.shields.io/pypi/dm/bopomofo.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/bopomofo
+
+.. image:: https://img.shields.io/pypi/l/bopomofo.svg?style=flat-square
+    :target: https://github.com/antfu/bopomofo/blob/master/LICENSE
+
 
 Translate 漢字 to ㄅㄆㄇㄈ
 
@@ -10,7 +25,7 @@ Install
 
 ::
 
-    pip install xpinyin
+    pip install bopomofo
 
 
 Usage
@@ -22,7 +37,7 @@ Usage
     >>> to_bopomofo(u'注音')
     'ㄓㄨ、ㄧㄣ'
 
-    >>> p.get_pinyin(u'注音', tone_marks=False)
+    >>> to_bopomofo(u'注音', tones=False)
     'ㄓㄨ、ㄧㄣ'
 
     >>> to_bopomofo(u'注音', ' ')
