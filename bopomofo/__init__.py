@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-
-from xpinyin import Pinyin
+from .__version__ import __version__
 from .dictionrary import pinyin_bopomofo as dict_pb
+from xpinyin import Pinyin
 
 # Create a 'xpinyin' instance
 _pinyin = Pinyin()
@@ -9,11 +9,8 @@ _pinyin = Pinyin()
 class PinyinParsingError(Exception):
     pass
 
-# Export the api of 'xpinyin'
-to_pinyin = _pinyin.get_pinyin
 
-
-def to_bopomofo(chars, splitter=u'、', tones=True, first_tone_symbol=False):
+def to_bopomofo(chars, splitter=u' ', tones=True, first_tone_symbol=False):
     '''Translate words to bopomofo
 
     :param chars: The text string to be coverted
@@ -23,6 +20,14 @@ def to_bopomofo(chars, splitter=u'、', tones=True, first_tone_symbol=False):
     '''
 
     return splitter.join(_bopomofo_list(chars, tones, first_tone_symbol))
+
+
+def to_pinyin(chars, splitter=u' ', tones=False):
+    '''Translate words to pinyin
+    An API port of 'xpinyin.get_pinyin'
+    '''
+
+    return _pinyin.get_pinyin(chars, splitter, show_tone_marks=tones)
 
 
 def _pinyin_list(chars, tones=False):
@@ -35,22 +40,30 @@ def _bopomofo_list(chars, tones=False, first_tone_symbol=False):
     '''Translate words to bopomofo in list'''
 
     pinyin = _pinyin_list(chars, tones)
-    return [_single_pinyin_to_bopomofo(x, tones, first_tone_symbol) for x in pinyin]
+    return [_single_pinyin_to_bopomofo(x, tones, first_tone_symbol, ignore_warning=True) for x in pinyin]
 
 
 def _single_pinyin_to_bopomofo(pinyin, tones=False, first_tone_symbol=False, ignore_warning=False):
     '''Translate a single pinyin to bopomofo'''
 
     result = None
-    pinyin = pinyin.strip().lower()
+    raw = pinyin
+    pinyin = pinyin.strip('! ').lower()
     normalized_pinyin, pinyin_tone = _single_pinyin_extarct_tone(pinyin)
     consonant = None
     vowel = None
+    tone_symbol = ''
+
+    if tones:
+        # Skip if it's first tone, unless specified
+        if pinyin_tone != 1 or first_tone_symbol:
+            tone_symbol = dict_pb['tones']['bopomofo'][pinyin_tone]
+
 
     for con in dict_pb['special']:
         pin, bopo = con
         if normalized_pinyin == pin:
-            return bopo
+            return bopo + tone_symbol
 
     for con in dict_pb['consonants']:
         pin, bopo = con
@@ -61,7 +74,7 @@ def _single_pinyin_to_bopomofo(pinyin, tones=False, first_tone_symbol=False, ign
             break
     else:
         if (ignore_warning):
-            return ''
+            return raw
         raise PinyinParsingError('Can not find consonant for pinyin "%s".' % pinyin)
 
     for vow in dict_pb['vowels']:
@@ -71,20 +84,16 @@ def _single_pinyin_to_bopomofo(pinyin, tones=False, first_tone_symbol=False, ign
             break
     else:
         if (ignore_warning):
-            return ''
+            return raw
         raise PinyinParsingError('Can not find vowel for pinyin "%s".' % pinyin)
 
-    if tones:
-        # Skip if it's first tone, unless specified
-        if pinyin_tone != 1 or first_tone_symbol:
-            result += dict_pb['tones']['bopomofo'][pinyin_tone]
-
-    return result
+    return result + tone_symbol
 
 def _single_pinyin_extarct_tone(pinyin):
     tone = 0
-    pinyin = pinyin.strip().lower()
-    normalized = None
+    raw = pinyin
+    pinyin = raw.strip().lower()
+    normalized = raw
     for _tone, letters in dict_pb['tones']['pinyin'].items():
         # Ignore the zero-tone list
         if _tone == 0:
