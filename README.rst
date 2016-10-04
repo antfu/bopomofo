@@ -6,10 +6,13 @@ Bopomofo
 .. image:: https://img.shields.io/codecov/c/github/antfu/bopomofo.svg?style=flat-square
     :target: https://codecov.io/gh/antfu/bopomofo
 
+.. image:: https://img.shields.io/codacy/grade/c5ae3c7ed15f4b388218f83cda6782f9.svg?style=flat-square
+    :target: https://www.codacy.com/app/anthonyfu117/bopomofo
+
 .. image:: https://img.shields.io/pypi/v/bopomofo.svg?style=flat-square
     :target: https://pypi.python.org/pypi/bopomofo
 
-.. image:: https://img.shields.io/pypi/dm/bopomofo.svg?style=flat-square
+.. image:: https://img.shields.io/pypi/pyversions/bopomofo.svg?style=flat-square
     :target: https://pypi.python.org/pypi/bopomofo
 
 .. image:: https://img.shields.io/pypi/status/bopomofo.svg?style=flat-square
@@ -24,7 +27,7 @@ Translate 漢字 to ㄅㄆㄇㄈ, based on `lxneng/xpinyin <https://github.com/l
 Install
 ----------
 
-.. highlight:: sh
+::
 
     pip install bopomofo
 
@@ -41,7 +44,7 @@ Usage
     >>> to_bopomofo(u'注音', tones=False)
     'ㄓㄨ ㄧㄣ'
 
-    >>> to_bopomofo(u'注音', '、')
+    >>> to_bopomofo(u'注音', u'、')
     'ㄓㄨˋ、ㄧㄣ'
 
     >>> bopomofo.to_bopomofo(u'注音', first_tone_symbol=True)

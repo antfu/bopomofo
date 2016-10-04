@@ -28,7 +28,7 @@ setup(name='bopomofo',
           #   3 - Alpha
           #   4 - Beta
           #   5 - Production/Stable
-          'Development Status :: 3 - Alpha',
+          'Development Status :: 4 - Beta',
           'Intended Audience :: Developers',
           'Operating System :: OS Independent',
           'Topic :: Software Development :: Libraries :: Python Modules',

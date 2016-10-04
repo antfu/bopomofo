@@ -10,7 +10,7 @@ def test_application():
     assert bopomofo.to_bopomofo(u'注音', first_tone_symbol=True) == u'ㄓㄨˋ ㄧㄣˉ'
     assert bopomofo.to_bopomofo(u'English') == 'English'
     assert bopomofo.to_bopomofo(u'English中文') == u'English ㄓㄨㄥ ㄨㄣˊ'
-    assert bopomofo.to_bopomofo(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務', '', first_tone_symbol=True) \
+    assert bopomofo.to_bopomofo(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務', u'', first_tone_symbol=True) \
         == u'GitHubㄕˋㄧˉㄍㄜˋㄊㄡˋㄍㄨㄛˋGitㄐㄧㄣˋㄒㄧㄥˊㄅㄢˇㄅㄣˇㄎㄨㄥˋㄓˋㄉㄜ˙ㄖㄨㄢˇㄊㄧˇㄩㄢˊㄕˇㄇㄚˇㄉㄞˋㄍㄨㄢˇㄈㄨˊㄨˋ'
 
 
