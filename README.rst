@@ -12,13 +12,14 @@ Bopomofo
 .. image:: https://img.shields.io/pypi/dm/bopomofo.svg?style=flat-square
     :target: https://pypi.python.org/pypi/bopomofo
 
+.. image:: https://img.shields.io/pypi/status/bopomofo.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/bopomofo
+
 .. image:: https://img.shields.io/pypi/l/bopomofo.svg?style=flat-square
     :target: https://github.com/antfu/bopomofo/blob/master/LICENSE
 
 
-Translate 漢字 to ㄅㄆㄇㄈ
-
-based on `lxneng/xpinyin <https://github.com/lxneng/xpinyin>`_.
+Translate 漢字 to ㄅㄆㄇㄈ, based on `lxneng/xpinyin <https://github.com/lxneng/xpinyin>`_.
 
 Install
 ----------
@@ -35,10 +36,13 @@ Usage
 
     >>> from bopomofo import to_bopomofo
     >>> to_bopomofo(u'注音')
-    'ㄓㄨ、ㄧㄣ'
+    'ㄓㄨˋ、ㄧㄣ'
 
     >>> to_bopomofo(u'注音', tones=False)
     'ㄓㄨ、ㄧㄣ'
 
     >>> to_bopomofo(u'注音', ' ')
-    'ㄓㄨ ㄧㄣ'
+    'ㄓㄨˋ ㄧㄣ'
+
+    >>> to_bopomofo(u'注音', ' ')
+    'ㄓㄨˋ ㄧㄣ'
