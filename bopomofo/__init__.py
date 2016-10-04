@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from .__version__ import __version__
-from .dictionrary import pinyin_bopomofo as dict_pb
+import sys
 from xpinyin import Pinyin
+
+from .__version__ import __version__
+from .dictionrary import pinyin_bopomofo as _dict
 
 # Create a 'xpinyin' instance
 _pinyin = Pinyin()
@@ -57,15 +59,15 @@ def _single_pinyin_to_bopomofo(pinyin, tones=False, first_tone_symbol=False, ign
     if tones:
         # Skip if it's first tone, unless specified
         if pinyin_tone != 1 or first_tone_symbol:
-            tone_symbol = dict_pb['tones']['bopomofo'][pinyin_tone]
+            tone_symbol = _dict['tones']['bopomofo'][pinyin_tone]
 
 
-    for con in dict_pb['special']:
+    for con in _dict['special']:
         pin, bopo = con
         if normalized_pinyin == pin:
             return bopo + tone_symbol
 
-    for con in dict_pb['consonants']:
+    for con in _dict['consonants']:
         pin, bopo = con
         if normalized_pinyin.startswith(pin):
             result = bopo
@@ -77,7 +79,7 @@ def _single_pinyin_to_bopomofo(pinyin, tones=False, first_tone_symbol=False, ign
             return raw
         raise PinyinParsingError('Can not find consonant for pinyin "%s".' % pinyin)
 
-    for vow in dict_pb['vowels']:
+    for vow in _dict['vowels']:
         pin, bopo = vow
         if vowel == pin:
             result += bopo
@@ -94,7 +96,7 @@ def _single_pinyin_extarct_tone(pinyin):
     raw = pinyin
     pinyin = raw.strip().lower()
     normalized = raw
-    for _tone, letters in dict_pb['tones']['pinyin'].items():
+    for _tone, letters in _dict['tones']['pinyin'].items():
         # Ignore the zero-tone list
         if _tone == 0:
             continue
@@ -103,7 +105,7 @@ def _single_pinyin_extarct_tone(pinyin):
                 tone_char_index = pinyin.index(char)
                 tone = _tone
                 normalized = pinyin[:tone_char_index] \
-                           + dict_pb['tones']['pinyin'][0][char_index] \
+                           + _dict['tones']['pinyin'][0][char_index] \
                            + pinyin[tone_char_index+1:]
                 break
         else:

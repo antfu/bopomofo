@@ -24,7 +24,7 @@ Translate 漢字 to ㄅㄆㄇㄈ, based on `lxneng/xpinyin <https://github.com/l
 Install
 ----------
 
-::
+.. highlight:: sh
 
     pip install bopomofo
 
@@ -32,17 +32,17 @@ Install
 Usage
 ----------
 
-::
+.. code-block:: python
 
     >>> from bopomofo import to_bopomofo
     >>> to_bopomofo(u'注音')
-    'ㄓㄨˋ、ㄧㄣ'
+    'ㄓㄨˋ ㄧㄣ'
 
     >>> to_bopomofo(u'注音', tones=False)
-    'ㄓㄨ、ㄧㄣ'
+    'ㄓㄨ ㄧㄣ'
 
-    >>> to_bopomofo(u'注音', ' ')
-    'ㄓㄨˋ ㄧㄣ'
+    >>> to_bopomofo(u'注音', '、')
+    'ㄓㄨˋ、ㄧㄣ'
 
-    >>> to_bopomofo(u'注音', ' ')
-    'ㄓㄨˋ ㄧㄣ'
+    >>> bopomofo.to_bopomofo(u'注音', first_tone_symbol=True)
+    'ㄓㄨˋ ㄧㄣˉ'

@@ -2,15 +2,17 @@
 import pytest
 import bopomofo
 
+
 def test_application():
-    assert bopomofo.to_bopomofo(u'注音') == 'ㄓㄨˋ ㄧㄣ'
-    assert bopomofo.to_bopomofo(u'注音', '、') == 'ㄓㄨˋ、ㄧㄣ'
-    assert bopomofo.to_bopomofo(u'注音', tones=False) == 'ㄓㄨ ㄧㄣ'
-    assert bopomofo.to_bopomofo(u'注音', first_tone_symbol=True) == 'ㄓㄨˋ ㄧㄣˉ'
+    assert bopomofo.to_bopomofo(u'注音') == u'ㄓㄨˋ ㄧㄣ'
+    assert bopomofo.to_bopomofo(u'注音', u'、') == u'ㄓㄨˋ、ㄧㄣ'
+    assert bopomofo.to_bopomofo(u'注音', tones=False) == u'ㄓㄨ ㄧㄣ'
+    assert bopomofo.to_bopomofo(u'注音', first_tone_symbol=True) == u'ㄓㄨˋ ㄧㄣˉ'
     assert bopomofo.to_bopomofo(u'English') == 'English'
-    assert bopomofo.to_bopomofo(u'English中文') == 'English ㄓㄨㄥ ㄨㄣˊ'
-    assert bopomofo.to_bopomofo(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務', '', first_tone_symbol=True)\
-       == u'GitHubㄕˋㄧˉㄍㄜˋㄊㄡˋㄍㄨㄛˋGitㄐㄧㄣˋㄒㄧㄥˊㄅㄢˇㄅㄣˇㄎㄨㄥˋㄓˋㄉㄜ˙ㄖㄨㄢˇㄊㄧˇㄩㄢˊㄕˇㄇㄚˇㄉㄞˋㄍㄨㄢˇㄈㄨˊㄨˋ'
+    assert bopomofo.to_bopomofo(u'English中文') == u'English ㄓㄨㄥ ㄨㄣˊ'
+    assert bopomofo.to_bopomofo(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務', '', first_tone_symbol=True) \
+        == u'GitHubㄕˋㄧˉㄍㄜˋㄊㄡˋㄍㄨㄛˋGitㄐㄧㄣˋㄒㄧㄥˊㄅㄢˇㄅㄣˇㄎㄨㄥˋㄓˋㄉㄜ˙ㄖㄨㄢˇㄊㄧˇㄩㄢˊㄕˇㄇㄚˇㄉㄞˋㄍㄨㄢˇㄈㄨˊㄨˋ'
+
 
 def test_extract_tone():
     cases = [
@@ -38,11 +40,15 @@ def test_pinyin_to_bopomofo():
     ]
 
     for case in cases:
-        assert bopomofo._single_pinyin_to_bopomofo(case[0], tones=True) == case[1]
+        assert bopomofo._single_pinyin_to_bopomofo(
+            case[0], tones=True) == case[1]
+
 
 def test_to_pinyin():
-    assert bopomofo.to_pinyin(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務', tones=True) == 'GitHub shì yī gè tòu! guò! Git jìn xíng bǎn běn kòng zhì de ruǎn tǐ yuán shǐ mǎ dài guǎn fú wù'
-    assert bopomofo.to_pinyin(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務') == 'GitHub shi yi ge tou guo Git jin xing ban ben kong zhi de ruan ti yuan shi ma dai guan fu wu'
+    assert bopomofo.to_pinyin(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務', tones=True) \
+        == u'GitHub shì yī gè tòu! guò! Git jìn xíng bǎn běn kòng zhì de ruǎn tǐ yuán shǐ mǎ dài guǎn fú wù'
+    assert bopomofo.to_pinyin(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務') \
+        == u'GitHub shi yi ge tou guo Git jin xing ban ben kong zhi de ruan ti yuan shi ma dai guan fu wu'
 
 
 def test_invaild_inputs():
