@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import re
 from xpinyin import Pinyin
 
 from .__version__ import __version__
@@ -30,6 +31,11 @@ def to_pinyin(chars, splitter=u' ', tones=False):
     '''
 
     return _pinyin.get_pinyin(chars, splitter, show_tone_marks=tones)
+
+def bopomofo_to_pinyin(bopomofo, splitter=u' '):
+    '''Translate bopomofo to pinyin'''
+
+    return splitter.join([_single_bopomofo_to_pinyin(x, True) for x in bopomofo.split(splitter)])
 
 
 def _pinyin_list(chars, tones=False):
@@ -90,6 +96,68 @@ def _single_pinyin_to_bopomofo(pinyin, tones=False, first_tone_symbol=False, ign
         raise PinyinParsingError('Can not find vowel for pinyin "%s".' % pinyin)
 
     return result + tone_symbol
+
+
+def _single_bopomofo_to_pinyin(bopomofo, tones=False, ignore_warning=False):
+    result = None
+    raw = bopomofo
+    tone_index = 0
+    normalized = raw.strip()
+    for index, tone_symbol in _dict['tones']['bopomofo'].items():
+        if normalized.endswith(tone_symbol):
+            tone_index = index
+            normalized = normalized.rstrip(tone_symbol)
+
+    if not tones:
+        tone_index = 0
+
+    for pin, bopo in _dict['special']:
+        if normalized == bopo:
+            return _single_pinyin_append_tone(pin, tone_index)
+
+    for pin, bopo in _dict['consonants']:
+        if normalized.startswith(bopo):
+            result = pin
+            consonant = bopo
+            vowel = normalized[len(bopo):]
+            break
+    else:
+        if (ignore_warning):
+            return raw
+        raise PinyinParsingError('Can not find consonant for bopomofo "%s".' % bopomofo)
+
+
+    for pin, bopo in _dict['vowels']:
+        if vowel == bopo:
+            result += pin
+            break
+    else:
+        if (ignore_warning):
+            return raw
+        raise PinyinParsingError('Can not find consonant for bopomofo "%s".' % bopomofo)
+
+    return _single_pinyin_append_tone(result, tone_index)
+
+def _single_pinyin_append_tone(pinyin, tone):
+    t = pinyin
+    if tone != 0:
+        m = re.search("[aoeiuv\u00fc]+", t)
+        if m is None:
+            pass
+        elif len(m.group(0)) == 1:
+            # if just find one vowels, put the mark on it
+            t = t[:m.start(0)] \
+                + _dict['tones']['pinyin'][tone][_dict['tones']['pinyin'][0].index(m.group(0))] \
+                + t[m.end(0):]
+        else:
+            # mark on vowels which search with "a, o, e" one by one
+            # when "i" and "u" stand together, make the vowels behind
+            for num, vowels in enumerate(("a", "o", "e", "ui", "iu")):
+                if vowels in t:
+                    t = t.replace(vowels[-1], _dict['tones']['pinyin'][tone][num])
+                    break
+    return t
+
 
 def _single_pinyin_extarct_tone(pinyin):
     tone = 0
