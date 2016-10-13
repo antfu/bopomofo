@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 pinyin_bopomofo = {
+    'vacabulary': u'ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦㄧㄨㄩ',
     'consonants': [
         ('b', u'ㄅ'),
         ('p', u'ㄆ'),

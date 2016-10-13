@@ -44,6 +44,31 @@ def test_pinyin_to_bopomofo():
             case[0], tones=True) == case[1]
 
 
+def test_bopomofo_to_pinyin():
+    cases = [
+        [u'fú', u'ㄈㄨˊ'],
+        [u'wù', u'ㄨˋ'],
+        [u'shì', u'ㄕˋ'],
+        [u'yī', u'ㄧ'],
+        [u'tòu', u'ㄊㄡˋ']
+    ]
+
+    for case in cases:
+        assert bopomofo._single_bopomofo_to_pinyin(
+            case[1], tones=True) == case[0]
+
+    with pytest.raises(bopomofo.PinyinParsingError):
+        bopomofo._single_bopomofo_to_pinyin('ㄕㄕ')
+
+    with pytest.raises(bopomofo.PinyinParsingError):
+        bopomofo._single_bopomofo_to_pinyin('ㄜㄜ')
+
+    assert bopomofo.bopomofo_to_pinyin(u'GitHubㄕˋㄧˉㄍㄜˋㄊㄡˋㄍㄨㄛˋGitㄐㄧㄣˋㄒㄧㄥˊㄅㄢˇㄅㄣˇㄎㄨㄥˋㄓˋㄉㄜ˙ㄖㄨㄢˇㄊㄧˇㄩㄢˊㄕˇㄇㄚˇㄉㄞˋㄍㄨㄢˇㄈㄨˊㄨˋ') \
+        == u'GitHub shì yī gè tòu guò Git jìn xíng bǎn běn kòng zhì de ruǎn tǐ yuán shǐ mǎ dài guǎn fú wù'
+    assert bopomofo.bopomofo_to_pinyin(u'GitHubㄕˋㄧˉㄍㄜˋㄊㄡˋㄍㄨㄛˋGitㄐㄧㄣˋㄒㄧㄥˊㄅㄢˇㄅㄣˇㄎㄨㄥˋㄓˋㄉㄜ˙ㄖㄨㄢˇㄊㄧˇㄩㄢˊㄕˇㄇㄚˇㄉㄞˋㄍㄨㄢˇㄈㄨˊㄨˋ', tones=False) \
+        == u'GitHub shi yi ge tou guo Git jin xing ban ben kong zhi de ruan ti yuan shi ma dai guan fu wu'
+
+
 def test_to_pinyin():
     assert bopomofo.to_pinyin(u'GitHub是一個透過Git進行版本控制的軟體原始碼代管服務', tones=True) \
         == u'GitHub shì yī gè tòu! guò! Git jìn xíng bǎn běn kòng zhì de ruǎn tǐ yuán shǐ mǎ dài guǎn fú wù'

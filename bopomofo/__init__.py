@@ -32,11 +32,31 @@ def to_pinyin(chars, splitter=u' ', tones=False):
 
     return _pinyin.get_pinyin(chars, splitter, show_tone_marks=tones)
 
-def bopomofo_to_pinyin(bopomofo, splitter=u' '):
+def bopomofo_to_pinyin(bopomofo, splitter=u' ', tones=True, default_tone=1):
     '''Translate bopomofo to pinyin'''
 
-    return splitter.join([_single_bopomofo_to_pinyin(x, True) for x in bopomofo.split(splitter)])
+    bopomofos = _bopomofo_split(bopomofo, splitter)
+    return splitter.join([_single_bopomofo_to_pinyin(x, tones, default_tone, ignore_warning=True) for x in bopomofos])
 
+
+def _bopomofo_split(bopomofo, splitter=u' '):
+    tones = u''.join(_dict['tones']['bopomofo'].values()) + splitter
+    vacabulary = _dict['vacabulary'] + tones
+    bopomofos = []
+    pre_index = 0
+    not_bopomofo = False
+    for index, char in enumerate(bopomofo):
+        if char not in vacabulary:
+            not_bopomofo = True
+        else:
+            if not_bopomofo:
+                bopomofos.append(bopomofo[pre_index:index])
+                pre_index = index
+            not_bopomofo = False
+            if char in tones:
+                bopomofos.append(bopomofo[pre_index:index+1])
+                pre_index = index + 1
+    return bopomofos
 
 def _pinyin_list(chars, tones=False):
     '''Translate words to pinyin in list'''
@@ -98,10 +118,10 @@ def _single_pinyin_to_bopomofo(pinyin, tones=False, first_tone_symbol=False, ign
     return result + tone_symbol
 
 
-def _single_bopomofo_to_pinyin(bopomofo, tones=False, ignore_warning=False):
+def _single_bopomofo_to_pinyin(bopomofo, tones=False, default_tone=1, ignore_warning=False):
     result = None
     raw = bopomofo
-    tone_index = 0
+    tone_index = default_tone
     normalized = raw.strip()
     for index, tone_symbol in _dict['tones']['bopomofo'].items():
         if normalized.endswith(tone_symbol):
@@ -122,7 +142,7 @@ def _single_bopomofo_to_pinyin(bopomofo, tones=False, ignore_warning=False):
             vowel = normalized[len(bopo):]
             break
     else:
-        if (ignore_warning):
+        if (ignore_warning): # p
             return raw
         raise PinyinParsingError('Can not find consonant for bopomofo "%s".' % bopomofo)
 
@@ -132,7 +152,7 @@ def _single_bopomofo_to_pinyin(bopomofo, tones=False, ignore_warning=False):
             result += pin
             break
     else:
-        if (ignore_warning):
+        if (ignore_warning): # pragma: no cover
             return raw
         raise PinyinParsingError('Can not find consonant for bopomofo "%s".' % bopomofo)
 
@@ -142,7 +162,7 @@ def _single_pinyin_append_tone(pinyin, tone):
     t = pinyin
     if tone != 0:
         m = re.search("[aoeiuv\u00fc]+", t)
-        if m is None:
+        if m is None: # pragma: no cover
             pass
         elif len(m.group(0)) == 1:
             # if just find one vowels, put the mark on it
