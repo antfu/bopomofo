@@ -142,10 +142,9 @@ def _single_bopomofo_to_pinyin(bopomofo, tones=False, default_tone=1, ignore_war
             vowel = normalized[len(bopo):]
             break
     else:
-        if (ignore_warning): # p
+        if (ignore_warning):
             return raw
         raise PinyinParsingError('Can not find consonant for bopomofo "%s".' % bopomofo)
-
 
     for pin, bopo in _dict['vowels']:
         if vowel == bopo:
@@ -158,10 +157,11 @@ def _single_bopomofo_to_pinyin(bopomofo, tones=False, default_tone=1, ignore_war
 
     return _single_pinyin_append_tone(result, tone_index)
 
+
 def _single_pinyin_append_tone(pinyin, tone):
     t = pinyin
     if tone != 0:
-        m = re.search("[aoeiuv\u00fc]+", t)
+        m = re.search(u"[aoeiuv\u00fc]+", t)
         if m is None: # pragma: no cover
             pass
         elif len(m.group(0)) == 1:
@@ -172,7 +172,7 @@ def _single_pinyin_append_tone(pinyin, tone):
         else:
             # mark on vowels which search with "a, o, e" one by one
             # when "i" and "u" stand together, make the vowels behind
-            for num, vowels in enumerate(("a", "o", "e", "ui", "iu")):
+            for num, vowels in enumerate((u"a", u"o", u"e", u"ui", u"iu")):
                 if vowels in t:
                     t = t.replace(vowels[-1], _dict['tones']['pinyin'][tone][num])
                     break

@@ -58,10 +58,10 @@ def test_bopomofo_to_pinyin():
             case[1], tones=True) == case[0]
 
     with pytest.raises(bopomofo.PinyinParsingError):
-        bopomofo._single_bopomofo_to_pinyin('ㄕㄕ')
+        bopomofo._single_bopomofo_to_pinyin(u'ㄕㄕ')
 
     with pytest.raises(bopomofo.PinyinParsingError):
-        bopomofo._single_bopomofo_to_pinyin('ㄜㄜ')
+        bopomofo._single_bopomofo_to_pinyin(u'ㄜㄜ')
 
     assert bopomofo.bopomofo_to_pinyin(u'GitHubㄕˋㄧˉㄍㄜˋㄊㄡˋㄍㄨㄛˋGitㄐㄧㄣˋㄒㄧㄥˊㄅㄢˇㄅㄣˇㄎㄨㄥˋㄓˋㄉㄜ˙ㄖㄨㄢˇㄊㄧˇㄩㄢˊㄕˇㄇㄚˇㄉㄞˋㄍㄨㄢˇㄈㄨˊㄨˋ') \
         == u'GitHub shì yī gè tòu guò Git jìn xíng bǎn běn kòng zhì de ruǎn tǐ yuán shǐ mǎ dài guǎn fú wù'
