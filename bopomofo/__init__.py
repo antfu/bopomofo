@@ -30,7 +30,7 @@ def to_pinyin(chars, splitter=u' ', tones=False):
     An API port of 'xpinyin.get_pinyin'
     '''
 
-    return _pinyin.get_pinyin(chars, splitter, show_tone_marks=tones)
+    return _pinyin.get_pinyin(chars, splitter, tone_marks=tones)
 
 def bopomofo_to_pinyin(bopomofo, splitter=u' ', tones=True, default_tone=1):
     '''Translate bopomofo to pinyin'''
