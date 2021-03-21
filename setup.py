@@ -21,7 +21,7 @@ setup(name='bopomofo',
       license='MIT',
       long_description=read('README.rst'),
       packages=['bopomofo'],
-      install_requires=['xpinyin'],
+      install_requires=['xpinyin==0.5.5'],
 
       # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
